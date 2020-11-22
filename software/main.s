@@ -46,25 +46,10 @@ loop:
 
   lda #$ff
   sta $00
-;  jsr sleep
 
   jmp loop
 
   INCLUDE include/textrendering.inc 
-
-sleep:
-  ldx $00
-  nop
-  nop
-  nop
-  nop
-  dex
-  stx $00
-  beq end_sleep
-  jmp sleep
-
-end_sleep:
-  rts
 
 words:
   .org $fffc

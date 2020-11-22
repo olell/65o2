@@ -4,22 +4,48 @@
 ;
 
 fill_screen:
-    ; This subroutine fills the whole screen (256 * 192px) in one color
+    lda #$ff   ; Width -> 256
+    sta $0203
+    lda #$c0   ; Height -> 192
+    sta $0204
+    lda #$00
+    sta $0201
+    sta $0202
+    
+    jsr fill_box
+    rts
+
+fill_box:
+    ; This subroutine fills a given box in one color
     ; Parameters:
     ;   0x0200: Color
+    ;   0x0201: X
+    ;   0x0202: Y
+    ;   0x0203: Width
+    ;   0x0204: Height
     ;
     ; Zero Page usage:
     ;   0x00: Current X
     ;   0x01: Current Y
 
-    ldx #$00  ; Set current X to Zero
+    ldx $0201 ; Set current X to start value
     stx $00   ; ^
 
-    ldy #$00  ; Set current Y to Zero
-    sty $00  ; ^
+    ldy $0202 ; Set current Y to start value
+    sty $01   ; ^
 
-fill_screen_loop:
-    ; Part of "fill_screen"
+    ; Calculate X+wd, Y+hg
+    lda $0201
+    clc
+    adc $0203
+    sta $0203
+    lda $0202
+    clc
+    adc $0204
+    sta $0204
+
+fill_box_loop:
+    ; Part of "fill_box"
     
     ldx $00   ; Increase X
     inx       ; ^
@@ -33,12 +59,19 @@ fill_screen_loop:
     sta $6002 ; Store color to display
 
     txa                   ; X -> A
-    beq fill_screen_inc_y ; X wrapped around (X == 0)
+    sec
+    sbc $0203             ; Subtract width
+    beq fill_box_inc_y ; x == 0: y ++
 
-    jmp fill_screen_loop
+    jmp fill_box_loop
 
-fill_screen_inc_y:
-    ; Part of "fill_screen"
+fill_box_inc_y:
+    ; Part of "fill_box"
+
+    ; Reset X position
+    ldx $0201
+    stx $00
+
     ; Increases current Y position
     ldy $01
     iny
@@ -46,10 +79,10 @@ fill_screen_inc_y:
 
     ; Check if display is filled
     tya                 ; Y -> A
-    sbc #$c0            ; subtract 192
-    beq fill_screen_rts ; on 0 -> rts
+    sbc $0204           ; subtract height
+    beq fill_box_rts ; on 0 -> rts
 
-    jmp fill_screen_loop
+    jmp fill_box_loop
 
-fill_screen_rts:
+fill_box_rts:
     rts

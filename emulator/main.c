@@ -207,8 +207,6 @@ int main(int argc, char* argv[]) {
         
         exec6502(EXECUTE_CYCLES);
         
-        // sleep 1mS here:
-        msleep(1);
     }
 
     return 0;

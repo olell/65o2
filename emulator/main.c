@@ -121,7 +121,7 @@ void *displayThread(void *vargp)
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) { 
         printf("error initializing SDL: %s\n", SDL_GetError()); 
     } 
-    SDL_Window* screen = SDL_CreateWindow("RetroComp Emulator", 
+    SDL_Window* screen = SDL_CreateWindow("65o2 Emulator", 
                                        SDL_WINDOWPOS_CENTERED, 
                                        SDL_WINDOWPOS_CENTERED, 
                                        WINDOW_WIDTH, WINDOW_HEIGHT, 0);

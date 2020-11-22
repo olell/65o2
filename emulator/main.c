@@ -28,7 +28,7 @@
 #define true 1
 
 //#define DEBUG_PRINTS  // Prints debugging information
-#define EXECUTE_CYCLES 1000
+#define EXECUTE_CYCLES 10000
 
 uint8_t ram[RAM_SIZE];
 uint8_t rom[ROM_SIZE];
@@ -199,13 +199,11 @@ int main(int argc, char* argv[]) {
 
     // Initial reset
     reset6502();
-    #ifdef DEBUG_PRINTS
-    clock_t t1, t2;
-    float diff;
-    #endif
     while (display_thread_running) {
         
         exec6502(EXECUTE_CYCLES);
+
+        msleep(1);
         
     }
 

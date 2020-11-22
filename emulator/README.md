@@ -16,6 +16,10 @@ make
 ```sh
 ./emu65o2 <rom file>
 ```
+or use the `run` script, it recompiles the software directory and runs it
+```
+sh run.sh
+```
 
 ## License
 This is free and unencumbered software released into the public domain.
